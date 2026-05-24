@@ -20,7 +20,7 @@ This repository is a sanitized portfolio version. It documents engineering appro
 - `docs/architecture.md`: block-level system architecture and signal flow.
 - `docs/schematic-review.md`: notes extracted from the shared SMPS, MCU, and heater schematic sheets.
 - `docs/safety-notes.md`: public documentation boundaries and mains-safety cautions.
-- `firmware/`: starter embedded-C control structure for heater state, NTC supervision, and fault handling.
+- `firmware/`: STM8 embedded-C starter with on/off, tea, coffee, keep-warm modes, NTC supervision, display refresh, motor/heater outputs, and buzzer/haptic feedback.
 
 ## Public Scope
 
@@ -36,7 +36,7 @@ It is not a build guide for mains hardware. AC-powered heater products require q
 
 ## Next Steps
 
-- Replace starter firmware with reviewed original STM8 code.
+- Replace the board-adaptation stubs with reviewed original STM8 pin/register code.
 - Add sanitized schematic exports or redrawn block diagrams.
 - Add state-machine timing notes for heater, fan/motor, UI, and error display behavior.
 - Add a short validation table: power rail checks, NTC response, triac trigger behavior, thermal cutoff, and fault recovery.

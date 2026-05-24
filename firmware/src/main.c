@@ -1,29 +1,19 @@
-#include "heater_controller.h"
+#include "app.h"
 
-/*
- * Integration stub for the public portfolio repository.
- * Replace these adapter functions with STM8 GPIO, ADC, timer, display,
- * watchdog, and SWIM-debug project code when importing the original firmware.
- */
-
-static heater_inputs_t read_inputs(void) {
-    heater_inputs_t inputs;
-    inputs.temperature_c_x10 = 780;
-    inputs.ntc_valid = true;
-    inputs.user_enable = true;
-    inputs.thermal_fuse_ok = true;
-    return inputs;
-}
-
-static void write_outputs(heater_outputs_t outputs) {
-    (void)outputs;
-    /* Map heater_output to optotriac drive and motor_output to MOSFET drive. */
-}
+#include "board.h"
+#include "config.h"
 
 int main(void) {
-    heater_controller_init();
+    uint32_t last_tick_ms;
+
+    app_init();
+    last_tick_ms = board_millis();
+
     while (1) {
-        heater_outputs_t outputs = heater_controller_update(read_inputs());
-        write_outputs(outputs);
+        const uint32_t now = board_millis();
+        if ((uint32_t)(now - last_tick_ms) >= APP_TICK_MS) {
+            last_tick_ms += APP_TICK_MS;
+            app_tick_10ms();
+        }
     }
 }
