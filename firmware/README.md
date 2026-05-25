@@ -24,23 +24,27 @@ project. It models the product behavior requested for the portfolio repository:
 | `ntc.c` | ADC-to-temperature conversion using a replaceable calibration table |
 | `display.c` | Four-digit 7-segment buffer and 74HC595-style refresh |
 | `feedback.c` | Non-blocking buzzer/haptic click, mode, power-off, and fault patterns |
-| `board.c` | STM8S003F3P6 pin/register adaptation layer |
+| `board.c` | STM8S003F3P6 final-schematic adaptation layer |
 
-## Pin Mapping Work Still Needed
+## Final Schematic Pinout Basis
 
-`board.c` intentionally contains stubs. Replace them with STM8 SPL, Cosmic, IAR,
-or SDCC register code after confirming the final schematic/PCB pinout:
+`board.c` is now documented against the final controller schematic you shared.
+The high-confidence public mapping is:
 
-- NTC ADC channel.
-- Four capacitive button inputs.
-- MOC3063/triac drive output.
-- Motor MOSFET output.
-- Buzzer output.
-- Haptic output, or map haptic pulses to the motor if no separate actuator exists.
-- 74HC595 data, clock, latch lines.
-- Display digit-enable transistors.
-- 1 ms timer interrupt calling `board_tick_1ms_isr()`.
-- Watchdog refresh.
+| Function | STM8 / net basis |
+| --- | --- |
+| Heater command | `MCU_HEATER`, routed to MOC3063 optotriac and main triac heater path |
+| NTC input | I2 / NTC divider, ADC input candidate `PD5/AIN5` |
+| Motor output | J3 / MOTOR through AO3400A low-side MOSFET path |
+| Buzzer feedback | LS1/Q6 output stage, `PD4/BEEP` candidate |
+| Display segments | U3 74HC595 serial driver |
+| Display digits | Q2-Q5 common-anode digit-enable transistors |
+| Buttons | Four capacitive-button GPIO inputs on the controller sheet |
+
+Before replacing stubs with register writes, confirm the visually dense display
+and button traces against the Altium netlist or native schematic export. The
+heater, NTC, motor, buzzer, and 74HC595 functional blocks are already reflected
+in the board layer.
 
 ## Default Targets
 
